@@ -27,7 +27,7 @@ function ConnectWallet() {
   const { connectors, connect } = useConnectors()
 
   return (
-    <HStack padding="3" w="full" justifyContent="space-between">
+    <HStack w="full" justifyContent="space-between">
       <HStack gap="4">
         {connectors.map((conn) => (
           <WalletButton
@@ -35,7 +35,7 @@ function ConnectWallet() {
             onClick={() => connect(conn)}
             isDisabled={!conn.available()}
           >
-            Connect wallet
+            <Text>Connect wallet</Text>
           </WalletButton>
         ))}
       </HStack>
@@ -53,10 +53,7 @@ function WalletConnected() {
   }, [address])
 
   return (
-    <HStack w="full" justifyContent="space-between">
-      <Text className='text-cat-rosewater'>Connected: {short}</Text>
-      <WalletButton onClick={disconnect}>Disconnect</WalletButton>
-    </HStack>
+    <WalletButton onClick={disconnect}>{short}</WalletButton>
   )
 }
 

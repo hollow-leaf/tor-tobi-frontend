@@ -5,14 +5,14 @@ import StarknetProvider from './providers/StarknetProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Hooks Reference - Starknet React ',
+  title: 'Tobi',
   description: 'Welcome to Starknet react',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="h-100 flex flex-col">
+      <body className="h-screen flex flex-col">
         <StarknetProvider>
           <ClientOnly>
             <Header />

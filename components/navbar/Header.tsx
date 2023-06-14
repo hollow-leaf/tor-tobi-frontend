@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { WalletBar } from '../WalletBar'
-import { Text } from '@chakra-ui/react'
+
 
 interface NavigationItemProps {
   href: string
@@ -17,8 +17,7 @@ interface NavigationItemProps {
 const NavigationItem = ({ href, title, setIsOpen }: NavigationItemProps) => {
   const pathname = usePathname()
 
-  const isActive =
-    href === '/' ? pathname === '/starknet-react' : pathname?.startsWith(`/starknet-react${href}`)
+  const isActive = href === pathname
 
   return (
     <div className="flex items-center">
@@ -45,9 +44,9 @@ const Header = () => {
 
   return (
     <div className="py-4 px-8 bg-cat-crust w-full flex justify-between">
-      <div className="items center sm:text-center ">
+      <div className="flex items-center sm:text-center ">
         <Link href="/" passHref className="text-xl font-bold text-cat-text">
-          Starknet React
+          Tobi
         </Link>
       </div>
       <div className="flex items-center">
@@ -60,6 +59,7 @@ const Header = () => {
         >
           <NavigationItem setIsOpen={setIsOpen} href="/" title="Home" />
           <NavigationItem setIsOpen={setIsOpen} href="/get-started" title="Get Started" />
+          <NavigationItem setIsOpen={setIsOpen} href="/bridge" title="Bridge" />
           <WalletBar></WalletBar>
         </div>
 
