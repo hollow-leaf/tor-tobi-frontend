@@ -5,6 +5,8 @@ import burgerMenu from '../../public/svg/burger-menu-svgrepo-com.svg'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { WalletBar } from '../WalletBar'
+import { Text } from '@chakra-ui/react'
 
 interface NavigationItemProps {
   href: string
@@ -19,7 +21,7 @@ const NavigationItem = ({ href, title, setIsOpen }: NavigationItemProps) => {
     href === '/' ? pathname === '/starknet-react' : pathname?.startsWith(`/starknet-react${href}`)
 
   return (
-    <div className="py-1 ">
+    <div className="flex items-center">
       <Link
         href={href}
         passHref
@@ -58,8 +60,7 @@ const Header = () => {
         >
           <NavigationItem setIsOpen={setIsOpen} href="/" title="Home" />
           <NavigationItem setIsOpen={setIsOpen} href="/get-started" title="Get Started" />
-          <NavigationItem setIsOpen={setIsOpen} href="/hooks" title="Hooks" />
-          <NavigationItem setIsOpen={setIsOpen} href="/rsc" title="RSC" />
+          <WalletBar></WalletBar>
         </div>
 
         <div className="sm:hidden">

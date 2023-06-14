@@ -1,5 +1,3 @@
-import core from '../generated/core.json'
-
 export interface TextLike {
   kind: string
   text: string
@@ -39,10 +37,4 @@ export function deprecationTag(hook: Function) {
   if (!tags) return undefined
 
   return tags.find((t) => t.tag === '@deprecated')
-}
-
-export function getAllHooks(): Function[] {
-  return core.children.filter(
-    (child) => child.kindString === 'Function' && child.name.startsWith('use')
-  ) as Function[]
 }

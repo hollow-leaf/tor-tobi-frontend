@@ -1,11 +1,19 @@
-# Starknet React Documentation
+# Starknet React
 
 ## Getting Started
 
-Start the development server from the root of the project:
+Start the development server:
 
 ```bash
-pnpm run web:dev
+pnpm install
+pnpm run dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000) with your browser to see the documentation.
+Then open [http://localhost:3000/starknet-react](http://localhost:3000/starknet-react) with your browser.
+
+Build the project:
+
+```bash
+pnpm install
+pnpm run build
+```

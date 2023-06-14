@@ -1,15 +1,18 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { StarknetConfig } from '@starknet-react/core'
+import { InjectedConnector, StarknetConfig } from '@starknet-react/core'
 
 interface StarknetProviderProps {
   children: ReactNode
 }
 
 const StarknetProvider = ({ children }: StarknetProviderProps) => {
+  const connectors = [
+    new InjectedConnector({options: {id: 'argentX'}})
+  ]
   return (
-    <StarknetConfig>
+    <StarknetConfig connectors={connectors}>
       <>{children}</>
     </StarknetConfig>
   )
