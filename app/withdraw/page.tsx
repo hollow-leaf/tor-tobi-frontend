@@ -20,35 +20,29 @@ import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
 import { WalletBar } from '@/components/WalletBar'
 
-function deposit() {
-  console.log("deposit")
+function withdraw() {
+  console.log("withdraw")
 }
 
-export default function DepositHome() {
+export default function WithdrawHome() {
   const chains = new Array('BNB', 'ETH', 'Polygon')
   const tokens = new Array('USDC', 'USDT', 'DAI', 'WETH')
 
   return (
     <div className="max-w-70 pt-12 mb-12 mx-4 lg:mx-0">
       <HookSection>
-        <SectionHeading>Deposit</SectionHeading>
+        <SectionHeading>Withdraw</SectionHeading>
         <Card className='bg-cat-mantle p-5 rounded'>
           <CardBody className='space-y-2'>
-            <Text className='text-cat-text'>Chain</Text>
-            <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" />
-              <ArrowRightIcon className='w-10' />
-              <SelectChain items={chains} placeholder="To" />
+            <div className='flex flex-row items-center justify-between'>
+              <Text className='text-cat-text'>Proof</Text>
             </div>
+            <Input className='bg-cat-mantle text-cat-text' type='text' placeholder='Your Proof' />
             <div className='flex flex-row items-center justify-between pt-5'>
-              <Text className='text-cat-text'>You send</Text>
-              <Text className='text-cat-text'>Balance: </Text>
+              <Text className='text-cat-text'>Address</Text>
             </div>
-            <div className='flex flex-row items-center justify-between space-x-4'>
-              <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' />
-              <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
-            </div>
-            <WalletBar placeholder='Kamui' className='pt-10' deposit={deposit} />
+            <Input className='bg-cat-mantle text-cat-text' type='text' placeholder='Your Address' />
+            <WalletBar placeholder='Kamui' className='pt-10' withdraw={withdraw} />
           </CardBody>
         </Card>
       </HookSection>

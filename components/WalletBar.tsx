@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 
 interface walletConnectedProps extends WalletBarProps {
   deposit?: () => void
+  withdraw?: () => void
 }
 
 function WalletButton(props: ButtonProps) {
@@ -57,7 +58,7 @@ function WalletConnected({ ...props }: walletConnectedProps) {
 
   return (
     <HStack w="full" justifyContent="center">
-      <WalletButton width="100%" onClick={props.deposit ? props.deposit : disconnect}>{props.placeholder ? props.placeholder : short}</WalletButton>
+      <WalletButton width="100%" onClick={props.deposit ? props.deposit : (props.withdraw ? props.withdraw : disconnect)}>{props.placeholder ? props.placeholder : short}</WalletButton>
     </HStack>
   )
 }
