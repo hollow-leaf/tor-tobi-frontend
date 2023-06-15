@@ -59,7 +59,8 @@ const Header = () => {
         >
           <NavigationItem setIsOpen={setIsOpen} href="/" title="Home" />
           <NavigationItem setIsOpen={setIsOpen} href="/get-started" title="Get Started" />
-          <NavigationItem setIsOpen={setIsOpen} href="/bridge" title="Bridge" />
+          <NavigationItem setIsOpen={setIsOpen} href="/deposit" title="Deposit" />
+          <NavigationItem setIsOpen={setIsOpen} href="/withdraw" title="Withdraw" />
           <WalletBar></WalletBar>
         </div>
 

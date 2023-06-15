@@ -3,6 +3,10 @@ import { Box, BoxProps, Button, ButtonProps, HStack, Text } from '@chakra-ui/rea
 import { useAccount, useConnectors } from '@starknet-react/core'
 import { useMemo } from 'react'
 
+interface walletConnectedProps extends WalletBarProps {
+  deposit?: () => void
+}
+
 function WalletButton(props: ButtonProps) {
   return (
     <>
@@ -27,23 +31,22 @@ function ConnectWallet() {
   const { connectors, connect } = useConnectors()
 
   return (
-    <HStack w="full" justifyContent="space-between">
-      <HStack gap="4">
-        {connectors.map((conn) => (
-          <WalletButton
-            key={conn.id()}
-            onClick={() => connect(conn)}
-            isDisabled={!conn.available()}
-          >
-            <Text>Connect wallet</Text>
-          </WalletButton>
-        ))}
-      </HStack>
+    <HStack w="full" justifyContent="center">
+      {connectors.map((conn) => (
+        <WalletButton
+          width="100%"
+          key={conn.id()}
+          onClick={() => connect(conn)}
+          isDisabled={!conn.available()}
+        >
+          <Text>Connect wallet</Text>
+        </WalletButton>
+      ))}
     </HStack>
   )
 }
 
-function WalletConnected() {
+function WalletConnected({ ...props }: walletConnectedProps) {
   const { address } = useAccount()
   const { disconnect } = useConnectors()
 
@@ -53,14 +56,16 @@ function WalletConnected() {
   }, [address])
 
   return (
-    <WalletButton onClick={disconnect}>{short}</WalletButton>
+    <HStack w="full" justifyContent="center">
+      <WalletButton width="100%" onClick={props.deposit ? props.deposit : disconnect}>{props.placeholder ? props.placeholder : short}</WalletButton>
+    </HStack>
   )
 }
 
 export type WalletBarProps = BoxProps
 
-export function WalletBar({ ...props }: WalletBarProps) {
+export function WalletBar({ ...props }: walletConnectedProps) {
   const { address } = useAccount()
 
-  return <Box {...props}>{address ? <WalletConnected /> : <ConnectWallet />}</Box>
+  return <Box {...props}>{address ? <WalletConnected {...props}/> : <ConnectWallet />}</Box>
 }

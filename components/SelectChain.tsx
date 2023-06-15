@@ -3,12 +3,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 interface SelectChainItemProps {
   items: string[]
   placeholder: string
+  className?: string
 }
 
-export function SelectChain({ items, placeholder }: SelectChainItemProps) {
+export function SelectChain({ items, placeholder, className }: SelectChainItemProps) {
   return (
     <Select>
-      <SelectTrigger className="grow bg-cat-sky">
+      <SelectTrigger className={className ? className : "grow bg-cat-sky"}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className="bg-cat-sky">
