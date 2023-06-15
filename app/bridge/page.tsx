@@ -17,6 +17,7 @@ import {
 import { useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ArrowRightIcon } from 'lucide-react'
+import { SelectChain } from '../../components/SelectChain'
 
 export default function BridgeHome() {
   const items = new Array('BNB', 'ETH', 'Polygon')
@@ -28,43 +29,9 @@ export default function BridgeHome() {
           <CardBody className='space-y-2'>
             <Text className='text-cat-rosewater'>Bridge Deposit</Text>
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <Select>
-                <SelectTrigger className="grow bg-cat-sky">
-                  <SelectValue placeholder="From" />
-                </SelectTrigger>
-                <SelectContent className="bg-cat-sky">
-                  {
-                    items.map((item, index) => (
-                      <SelectItem 
-                        key={index} 
-                        value={item} 
-                        className='hover:bg-cat-blue'
-                      >
-                        {item}
-                      </SelectItem>
-                    ))
-                  }
-                </SelectContent>
-              </Select>
+              <SelectChain items={items} placeholder="From" />
               <ArrowRightIcon className='w-10' />
-              <Select>
-                <SelectTrigger className="grow bg-cat-sky">
-                  <SelectValue placeholder="To" />
-                </SelectTrigger>
-                <SelectContent className="bg-cat-sky">
-                  {
-                    items.map((item, index) => (
-                      <SelectItem 
-                        key={index} 
-                        value={item} 
-                        className='hover:bg-cat-blue'
-                      >
-                        {item}
-                      </SelectItem>
-                    ))
-                  }
-                </SelectContent>
-              </Select>
+              <SelectChain items={items} placeholder="To" />
             </div>
           </CardBody>
         </Card>
