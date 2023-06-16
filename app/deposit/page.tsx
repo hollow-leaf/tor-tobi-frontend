@@ -11,7 +11,9 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  Text
+  Text,
+  Image,
+  Box
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -20,13 +22,22 @@ import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
 import { WalletBar } from '@/components/WalletBar'
 
-function deposit() {
-  console.log("deposit")
+function sleep(time: number) {
+  return new Promise(resolve => setTimeout(resolve, time));
 }
 
 export default function DepositHome() {
   const chains = new Array('BNB', 'ETH', 'Polygon')
   const tokens = new Array('USDC', 'USDT', 'DAI', 'WETH')
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function deposit() {
+    setIsLoading(true);
+    await sleep(5000)
+    console.log("deposit")
+    setIsLoading(false)
+  }
 
   return (
     <div className="max-w-70 pt-12 mb-12 mx-4 lg:mx-0">
@@ -48,7 +59,7 @@ export default function DepositHome() {
               <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' />
               <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
             </div>
-            <WalletBar placeholder='Kamui' className='pt-10' deposit={deposit} />
+            <WalletBar placeholder='Kamui' className='pt-10' deposit={deposit} loading={isLoading} loadingText="Loading" />
           </CardBody>
         </Card>
       </HookSection>

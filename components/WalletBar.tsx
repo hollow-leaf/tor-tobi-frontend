@@ -1,14 +1,19 @@
 'use client'
-import { Box, BoxProps, Button, ButtonProps, HStack, Text } from '@chakra-ui/react'
+import { Box, BoxProps, Button, ButtonProps, HStack, Spinner, Text } from '@chakra-ui/react'
 import { useAccount, useConnectors } from '@starknet-react/core'
 import { useMemo } from 'react'
+import approuter from '../public/approuter.png'
+import burgerMenu from '../public/svg/burger-menu-svgrepo-com.svg'
 
 interface walletConnectedProps extends WalletBarProps {
   deposit?: () => void
   withdraw?: () => void
+  loading?: boolean
+  loadingText?: string
+  spinner?: Object
 }
 
-function WalletButton(props: ButtonProps) {
+export function WalletButton(props: ButtonProps) {
   return (
     <>
       <Button
@@ -21,7 +26,10 @@ function WalletButton(props: ButtonProps) {
         paddingBottom="5px"
         paddingRight="10px"
         color="#cdd6f4"
+        isLoading={props.isLoading}
+        loadingText={props.loadingText}
         _hover={{ bg: '#fab387', color: '#1e1e2e' }}
+        spinner={<img src="/kamui.png" className='h-6 animate-spin' />}
         {...props}
       />
     </>
@@ -58,7 +66,14 @@ function WalletConnected({ ...props }: walletConnectedProps) {
 
   return (
     <HStack w="full" justifyContent="center">
-      <WalletButton width="100%" onClick={props.deposit ? props.deposit : (props.withdraw ? props.withdraw : disconnect)}>{props.placeholder ? props.placeholder : short}</WalletButton>
+      <WalletButton
+        width="100%"
+        onClick={props.deposit ? props.deposit : (props.withdraw ? props.withdraw : disconnect)}
+        isLoading={props.loading}
+        loadingText={props.loadingText}
+      >
+        {props.placeholder ? props.placeholder : short}
+      </WalletButton>
     </HStack>
   )
 }
@@ -68,5 +83,5 @@ export type WalletBarProps = BoxProps
 export function WalletBar({ ...props }: walletConnectedProps) {
   const { address } = useAccount()
 
-  return <Box {...props}>{address ? <WalletConnected {...props}/> : <ConnectWallet />}</Box>
+  return <Box {...props}>{address ? <WalletConnected {...props} /> : <ConnectWallet />}</Box>
 }
