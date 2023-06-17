@@ -1,16 +1,14 @@
 'use client'
 import { Box, BoxProps, Button, ButtonProps, HStack, Spinner, Text } from '@chakra-ui/react'
 import { useAccount, useConnectors } from '@starknet-react/core'
-import { useMemo } from 'react'
-import approuter from '../public/approuter.png'
-import burgerMenu from '../public/svg/burger-menu-svgrepo-com.svg'
+import { JSXElementConstructor, ReactElement, useMemo } from 'react'
 
 interface walletConnectedProps extends WalletBarProps {
   deposit?: () => void
   withdraw?: () => void
   loading?: boolean
   loadingText?: string
-  spinner?: Object
+  spinner?: ReactElement<any, string | JSXElementConstructor<any>>
 }
 
 export function WalletButton(props: ButtonProps) {
@@ -29,7 +27,7 @@ export function WalletButton(props: ButtonProps) {
         isLoading={props.isLoading}
         loadingText={props.loadingText}
         _hover={{ bg: '#fab387', color: '#1e1e2e' }}
-        spinner={<img src="/kamui.png" className='h-6 animate-spin' />}
+        spinner={props.spinner}
         {...props}
       />
     </>
@@ -71,6 +69,7 @@ function WalletConnected({ ...props }: walletConnectedProps) {
         onClick={props.deposit ? props.deposit : (props.withdraw ? props.withdraw : disconnect)}
         isLoading={props.loading}
         loadingText={props.loadingText}
+        spinner={props.spinner}
       >
         {props.placeholder ? props.placeholder : short}
       </WalletButton>

@@ -3,24 +3,16 @@
 import HookSection from '../../components/HookSection'
 import SectionHeading from '../../components/SectionHeading'
 import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
-  Text,
-  Image,
-  Box
+  Text
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ArrowRightIcon } from 'lucide-react'
 import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
 import { WalletBar } from '@/components/WalletBar'
+import Loading from '../loading'
 
 function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -41,6 +33,7 @@ export default function DepositHome() {
 
   return (
     <div className="max-w-70 pt-12 mb-12 mx-4 lg:mx-0">
+      {isLoading && <Loading />}
       <HookSection>
         <SectionHeading>Deposit</SectionHeading>
         <Card className='bg-cat-mantle p-5 rounded'>
@@ -59,10 +52,11 @@ export default function DepositHome() {
               <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' />
               <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
             </div>
-            <WalletBar placeholder='Kamui' className='pt-10' deposit={deposit} loading={isLoading} loadingText="Loading" />
+            <WalletBar placeholder='Kamui' className='pt-10' deposit={deposit} loading={isLoading} loadingText="Kamuiing" spinner={<></>} />
           </CardBody>
         </Card>
       </HookSection>
     </div>
+
   )
 }
