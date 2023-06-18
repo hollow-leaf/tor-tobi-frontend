@@ -21,10 +21,12 @@
     "@fontsource/dejavu-sans": "^4.5.4",
     "@fontsource/iosevka": "^4.5.4",
     "@radix-ui/react-select": "^1.2.2",
+    "@rainbow-me/rainbowkit": "^1.0.2",
     "@starknet-react/core": "^0.17.6",
     "@tanstack/react-query-devtools": "^4.29.12",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
+    "ethers": "^5.7.0",
     "framer-motion": "^7.4.0",
     "get-starknet": "^2.1.0",
     "html-react-parser": "^4.0.0",
@@ -40,7 +42,9 @@
     "starknet": "^4.22.0",
     "tailwind-merge": "^1.13.1",
     "tailwindcss-animate": "^1.0.6",
-    "typedoc": "^0.23.15"
+    "typedoc": "^0.23.15",
+    "viem": "^1.0.7",
+    "wagmi": "^1.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

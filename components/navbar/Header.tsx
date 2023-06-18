@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { WalletBar } from '../WalletBar'
-
+import { RainbowConnectButton } from '../Button/RainbowConnectButton'
 
 interface NavigationItemProps {
   href: string
@@ -25,9 +25,8 @@ const NavigationItem = ({ href, title, setIsOpen }: NavigationItemProps) => {
         href={href}
         passHref
         onClick={() => setIsOpen(false)}
-        className={`${
-          isActive ? 'border-b-2 ' : 'border-b-0'
-        } border-cat-peach py-1 transition ease-in-out delay-200  text-cat-text hover: bg-transparent hover: hover:text-cat-peach`}
+        className={`${isActive ? 'border-b-2 ' : 'border-b-0'
+          } border-cat-peach py-1 transition ease-in-out delay-200  text-cat-text hover: bg-transparent hover: hover:text-cat-peach`}
       >
         {title}
       </Link>
@@ -62,6 +61,7 @@ const Header = () => {
           <NavigationItem setIsOpen={setIsOpen} href="/deposit" title="Deposit" />
           <NavigationItem setIsOpen={setIsOpen} href="/withdraw" title="Withdraw" />
           <WalletBar></WalletBar>
+          <RainbowConnectButton></RainbowConnectButton>
         </div>
 
         <div className="sm:hidden">
