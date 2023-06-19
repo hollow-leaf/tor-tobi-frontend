@@ -15,14 +15,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="h-screen flex flex-col">
+      <body className="h-screen flex flex-col overflow-hidden">
         <Suspense fallback={<p>Loading feed...</p>}>
           <RainbowProvider>
             <StarknetProvider>
               <ClientOnly>
                 <Header />
               </ClientOnly>
-              <div className="grow bg-cat-base">{children}</div>
+              <div className="grow bg-cat-base overflow-y-auto" style={{ height: 'calc(100vh - 68px)' }}>{children}</div>
             </StarknetProvider>
           </RainbowProvider>
         </Suspense>
