@@ -2,6 +2,7 @@
 import { Box, BoxProps, Button, ButtonProps, HStack, Spinner, Text } from '@chakra-ui/react'
 import { useAccount, useConnectors } from '@starknet-react/core'
 import { JSXElementConstructor, ReactElement, useMemo } from 'react'
+import Image from 'next/image';
 
 interface walletConnectedProps extends WalletBarProps {
   deposit?: () => void
@@ -64,6 +65,27 @@ function WalletConnected({ ...props }: walletConnectedProps) {
 
   return (
     <HStack w="full" justifyContent="center">
+      <WalletButton
+          style={{ display: 'flex', alignItems: 'center' }}
+      >
+          <div
+                  style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: 999,
+                      overflow: 'hidden',
+                      marginRight: 4,
+                  }}
+              >
+              <Image
+                      alt='Starknet'
+                      src={'https://raw.githubusercontent.com/starknet-io/starknet-website/720804111f233c50e0a8020d031860482ef5e413/public/starknet-mark-light.svg'}
+                      width={12}
+                      height={12}
+                  /> 
+          </div>
+          Starknet
+      </WalletButton>
       <WalletButton
         width="100%"
         onClick={props.deposit ? props.deposit : (props.withdraw ? props.withdraw : disconnect)}

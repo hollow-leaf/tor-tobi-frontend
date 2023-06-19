@@ -1,6 +1,5 @@
 'use client'
 
-import '../../styles/global.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { Chain, configureChains, sepolia, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
@@ -8,6 +7,7 @@ import {
     RainbowKitProvider,
     getDefaultWallets,
     connectorsForWallets,
+    darkTheme
 } from '@rainbow-me/rainbowkit';
 import {
     argentWallet,
@@ -93,7 +93,9 @@ export const RainbowProvider = ({ children }: { children: React.ReactNode }) => 
     React.useEffect(() => setMounted(true), []);
     return (
         <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
+            <RainbowKitProvider appInfo={demoAppInfo} chains={chains} theme={darkTheme({
+                ...darkTheme.accentColors.orange,
+            })}>
                 {mounted && children}
             </RainbowKitProvider>
         </WagmiConfig>
