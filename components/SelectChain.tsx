@@ -1,5 +1,4 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useEffect, useState } from "react";
 
 interface SelectChainItemProps {
   items: any[]
@@ -8,9 +7,17 @@ interface SelectChainItemProps {
   setWalletNetwork?: any;
 }
 
-export function SelectChain({ items, placeholder, className, setWalletNetwork}: SelectChainItemProps) {
+export function SelectChain({ items, placeholder, className, setWalletNetwork }: SelectChainItemProps) {
+  const handleValueChange = (value: any) => {
+    if (setWalletNetwork) {
+      const selectedChain = items.find((item) => item.key === value);
+      if (selectedChain) {
+        setWalletNetwork(selectedChain.value);
+      }
+    }
+  };
   return (
-    <Select onValueChange={setWalletNetwork}>
+    <Select onValueChange={handleValueChange}>
       <SelectTrigger className={className ? className : "grow bg-cat-mantle text-cat-text"}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -19,7 +26,7 @@ export function SelectChain({ items, placeholder, className, setWalletNetwork}: 
           items.map((item, index) => (
             <SelectItem
               key={index}
-              value={item.value}
+              value={item.key}
               className='hover:bg-cat-neutral500'
             >
               {item.key}

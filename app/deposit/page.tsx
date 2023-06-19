@@ -12,7 +12,6 @@ import { ArrowRightIcon } from 'lucide-react'
 import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
 import { DepositButton } from '../../components/Button/DepositeButton'
-import { WalletBar } from '@/components/WalletBar'
 import Loading from '../loading'
 
 function sleep(time: number) {
@@ -20,48 +19,47 @@ function sleep(time: number) {
 }
 
 enum WalletNetwork {
-  StarkNet = 0,
-  EVM = 1,
-  De=999
+  StarkNet = 1,
+  EVM = 2,
 }
-interface ChainBase {
+interface ChainObject {
   key: string;
   value: WalletNetwork;
 }
 
 export default function DepositHome() {
 
-  const chains : ChainBase[] =[
-    {key:'BNB',value: WalletNetwork.EVM}, 
-    {key:'ETH',value:WalletNetwork.EVM}, 
-    {key:'Polygon',value:WalletNetwork.EVM}, 
-    {key:'StarkNet',value:WalletNetwork.StarkNet}
+  const chains: ChainObject[] = [
+    { key: 'ETH', value: WalletNetwork.EVM },
+    { key: 'Polygon', value: WalletNetwork.EVM },
+    { key: 'BNB', value: WalletNetwork.EVM },
+    { key: 'StarkNet', value: WalletNetwork.StarkNet }
   ]
   const tokens = new Array('USDC', 'USDT', 'DAI', 'WETH')
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedNetwork, setWalletNetwork] = useState(WalletNetwork.De);
+  const [selectedNetwork, setWalletNetwork] = useState(0);
 
   async function deposit() {
     setIsLoading(true);
-    switch(selectedNetwork) { 
-      case WalletNetwork.EVM: { 
+    switch (selectedNetwork) {
+      case WalletNetwork.EVM: {
         await sleep(1000)
         console.log("depositEVM")
-        break; 
-      } 
-      case WalletNetwork.StarkNet: { 
+        break;
+      }
+      case WalletNetwork.StarkNet: {
         await sleep(1000)
         console.log("depositStarkNet")
-        break; 
-      } 
-      default: { 
+        break;
+      }
+      default: {
         await sleep(1000)
         console.log("depositDefault")
-        break; 
-      } 
-   }
-   setIsLoading(false)
+        break;
+      }
+    }
+    setIsLoading(false)
   }
 
   return (
@@ -73,7 +71,7 @@ export default function DepositHome() {
           <CardBody className='space-y-2'>
             <Text className='text-cat-text'>Chain</Text>
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" setWalletNetwork={setWalletNetwork}/>
+              <SelectChain items={chains} placeholder="From" setWalletNetwork={setWalletNetwork} />
               <ArrowRightIcon className='w-10' />
               <SelectChain items={chains} placeholder="To" />
             </div>
@@ -85,13 +83,13 @@ export default function DepositHome() {
               <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' />
               <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
             </div>
-            <DepositButton 
-                placeholder='Kamui' 
-                className='pt-10' 
-                deposit={deposit}
-                loading={isLoading} 
-                loadingText="Kamuiing" 
-                 />
+            <DepositButton
+              placeholder='Kamui'
+              className='pt-10'
+              deposit={deposit}
+              loading={isLoading}
+              loadingText="Kamuiing"
+            />
           </CardBody>
         </Card>
       </HookSection>
