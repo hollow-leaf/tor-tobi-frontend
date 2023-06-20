@@ -17,17 +17,17 @@ interface walletConnectedProps extends WalletBarProps {
 export function DepositButton({ ...props }: walletConnectedProps) {
   return (
     <>
-    <Box {...props}>
-      <WalletButton
+      <Box {...props}>
+        <WalletButton
           width="100%"
           onClick={props.deposit}
           isLoading={props.loading}
           loadingText={props.loadingText}
           disabled={props.walletConfig.address != '' ? false : true}
         >
-        {props.placeholder}
-      </WalletButton>
-    </Box>
+          {props.placeholder}
+        </WalletButton>
+      </Box>
     </>
   )
 }

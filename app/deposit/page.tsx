@@ -44,20 +44,20 @@ export default function DepositHome() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWallet, setWallet] = useState(Wallet.Wagmi);
   const [selectedNetwork, setNetwork] = useState('Ethereum');
-  const [walletConfig, setConfig] = useState({address: '', wallet: '', network:''});
+  const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
 
-  const { address:wagmiAddress,  } = useAccountWagmi()
-  const { address:starkAddress } = useAccountStark()
-  
+  const { address: wagmiAddress, } = useAccountWagmi()
+  const { address: starkAddress } = useAccountStark()
+
   useEffect(
     () => {
-      if (selectedWallet == Wallet.Wagmi){
-        setConfig(() => {return {network: selectedNetwork, wallet: selectedWallet, address: wagmiAddress?? ''}})
-      }else{
-        setConfig(() => {return {network: selectedNetwork, wallet: selectedWallet, address: starkAddress?? ''}})
+      if (selectedWallet == Wallet.Wagmi) {
+        setConfig(() => { return { network: selectedNetwork, wallet: selectedWallet, address: wagmiAddress ?? '' } })
+      } else {
+        setConfig(() => { return { network: selectedNetwork, wallet: selectedWallet, address: starkAddress ?? '' } })
       }
     }
-    ,[selectedNetwork])
+    , [selectedNetwork, wagmiAddress, starkAddress])
 
   async function deposit() {
     setIsLoading(true);
@@ -86,20 +86,20 @@ export default function DepositHome() {
       {isLoading && <Loading />}
       <HookSection>
         <SectionHeading>Deposit</SectionHeading>
-        
+
         <Card className='bg-cat-mantle p-5 rounded'>
           <CardBody className='space-y-2'>
-            
+
             <div className='flex flex-row items-center justify-between space-x-2'>
               <Text className='text-cat-text'>Chain</Text>
               {
                 selectedWallet == Wallet.ArgentX
-                ? <WalletBar></WalletBar>
-                : <RainbowConnectButton></RainbowConnectButton>
+                  ? <WalletBar></WalletBar>
+                  : <RainbowConnectButton></RainbowConnectButton>
               }
             </div>
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" setWallet={setWallet} setNetwork={setNetwork}/>
+              <SelectChain items={chains} placeholder="From" setWallet={setWallet} setNetwork={setNetwork} />
               <ArrowRightIcon className='w-10' />
               <SelectChain items={chains} placeholder="To" />
             </div>
@@ -112,7 +112,7 @@ export default function DepositHome() {
               <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
             </div>
             <DepositButton
-              placeholder= {walletConfig.address !='' ? 'Kamui' : 'Please Connect First'}
+              placeholder={walletConfig.address != '' ? 'Kamui' : 'Please Connect First'}
               className='pt-10'
               deposit={deposit}
               loading={isLoading}

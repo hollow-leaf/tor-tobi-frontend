@@ -16,18 +16,18 @@ export function WalletButton(props: ButtonProps) {
   return (
     <>
       <Button
-        bg="transparent"
-        borderColor="#fab387"
+        bg={!props.disabled ? "transparent" : '#d3d4e4'}
+        borderColor={!props.disabled ? "#fab387" : '#d3d4e4'}
         borderWidth={1}
         borderRadius="5px"
         paddingLeft="10px"
         paddingTop="5px"
         paddingBottom="5px"
         paddingRight="10px"
-        color="#cdd6f4"
+        color={!props.disabled ? "#cdd6f4" : "#3d3f67"}
         isLoading={props.isLoading}
         loadingText={props.loadingText}
-        _hover={{ bg: '#fab387', color: '#1e1e2e' }}
+        _hover={!props.disabled ? { bg: '#fab387', color: '#1e1e2e' } : {}}
         spinner={props.spinner}
         {...props}
       />
@@ -69,25 +69,25 @@ function WalletConnected({ ...props }: walletConnectedProps) {
   return (
     <HStack w="full" justifyContent="center">
       <WalletButton
-          style={{ display: 'flex', alignItems: 'center' }}
+        style={{ display: 'flex', alignItems: 'center' }}
       >
-          <div
-                  style={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: 999,
-                      overflow: 'hidden',
-                      marginRight: 4,
-                  }}
-              >
-              <Image
-                      alt='Starknet'
-                      src={'https://raw.githubusercontent.com/starknet-io/starknet-website/720804111f233c50e0a8020d031860482ef5e413/public/starknet-mark-light.svg'}
-                      width={12}
-                      height={12}
-                  /> 
-          </div>
-          Starknet
+        <div
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: 999,
+            overflow: 'hidden',
+            marginRight: 4,
+          }}
+        >
+          <Image
+            alt='Starknet'
+            src={'https://raw.githubusercontent.com/starknet-io/starknet-website/720804111f233c50e0a8020d031860482ef5e413/public/starknet-mark-light.svg'}
+            width={12}
+            height={12}
+          />
+        </div>
+        Starknet
       </WalletButton>
       <WalletButton
         width="100%"
@@ -98,8 +98,8 @@ function WalletConnected({ ...props }: walletConnectedProps) {
       >
         {props.placeholder ? props.placeholder : short}
         {data?.formatted
-                ? ` (${data.formatted} ${data.symbol})`
-                : ''}
+          ? ` (${data.formatted} ${data.symbol})`
+          : ''}
       </WalletButton>
     </HStack>
   )
