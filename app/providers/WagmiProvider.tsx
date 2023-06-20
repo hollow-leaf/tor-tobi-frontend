@@ -1,7 +1,7 @@
 'use client'
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { Chain, configureChains, sepolia, createConfig } from 'wagmi'
+import { Chain, configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import {
     RainbowKitProvider,
@@ -14,7 +14,7 @@ import {
     trustWallet,
     ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { goerli, polygonMumbai, mainnet, polygon, optimism, arbitrum } from 'wagmi/chains'
+import { goerli, polygonMumbai, sepolia } from 'wagmi/chains'
 import { WagmiConfig } from 'wagmi';
 import * as React from 'react';
 
@@ -44,9 +44,7 @@ export const makeChain = (name: string, rpc: string, id: number) => {
 const defaultChains: Chain[] = [
     goerli,
     sepolia,
-    polygonMumbai,
-    mainnet,
-    polygon,
+    polygonMumbai
 ];
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(

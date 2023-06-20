@@ -23,7 +23,7 @@ export function DepositButton({ ...props }: walletConnectedProps) {
           onClick={props.deposit}
           isLoading={props.loading}
           loadingText={props.loadingText}
-          disabled={props.walletConfig.address != '' ? false : true}
+          disabled={(props.walletConfig.address != '' && props.walletConfig.network != '') ? false : true}
         >
           {props.placeholder}
         </WalletButton>
