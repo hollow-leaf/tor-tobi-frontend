@@ -1,6 +1,6 @@
 'use client'
 import { Box, BoxProps, Button, ButtonProps, HStack, Spinner, Text } from '@chakra-ui/react'
-import { useAccount, useConnectors } from '@starknet-react/core'
+import { useAccount, useBalance, useConnectors } from '@starknet-react/core'
 import { JSXElementConstructor, ReactElement, useMemo } from 'react'
 import Image from 'next/image';
 
@@ -47,7 +47,7 @@ function ConnectWallet() {
           onClick={() => connect(conn)}
           isDisabled={!conn.available()}
         >
-          <Text>Connect wallet</Text>
+          <Text>Connect Wallet</Text>
         </WalletButton>
       ))}
     </HStack>
@@ -57,6 +57,9 @@ function ConnectWallet() {
 function WalletConnected({ ...props }: walletConnectedProps) {
   const { address } = useAccount()
   const { disconnect } = useConnectors()
+  const { data, isLoading, error, refetch } = useBalance({
+    address
+  })
 
   const short = useMemo(() => {
     if (!address) return ''
@@ -94,6 +97,9 @@ function WalletConnected({ ...props }: walletConnectedProps) {
         spinner={props.spinner}
       >
         {props.placeholder ? props.placeholder : short}
+        {data?.formatted
+                ? ` (${data.formatted} ${data.symbol})`
+                : ''}
       </WalletButton>
     </HStack>
   )

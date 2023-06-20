@@ -13,42 +13,61 @@ import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
 import { DepositButton } from '../../components/Button/DepositeButton'
 import Loading from '../loading'
+import { useAccount as useAccountStark, useConnectors as useConnectorsStark } from '@starknet-react/core'
+import { useAccount as useAccountWagmi } from 'wagmi'
+import { WalletBar } from '@/components/WalletBar'
+import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
 
 function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
-enum WalletNetwork {
-  StarkNet = 1,
-  EVM = 2,
+export enum Wallet {
+  ArgentX = 'ArgentX',
+  Wagmi = 'Wagmi',
 }
 interface ChainObject {
   key: string;
-  value: WalletNetwork;
+  value: Wallet;
 }
 
 export default function DepositHome() {
 
   const chains: ChainObject[] = [
-    { key: 'ETH', value: WalletNetwork.EVM },
-    { key: 'Polygon', value: WalletNetwork.EVM },
-    { key: 'BNB', value: WalletNetwork.EVM },
-    { key: 'StarkNet', value: WalletNetwork.StarkNet }
+    { key: 'Ethereum', value: Wallet.Wagmi },
+    { key: 'Polygon', value: Wallet.Wagmi },
+    { key: 'Binance', value: Wallet.Wagmi },
+    { key: 'StarkNet', value: Wallet.ArgentX }
   ]
   const tokens = new Array('USDC', 'USDT', 'DAI', 'WETH')
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedNetwork, setWalletNetwork] = useState(0);
+  const [selectedWallet, setWallet] = useState(Wallet.Wagmi);
+  const [selectedNetwork, setNetwork] = useState('Ethereum');
+  const [walletConfig, setConfig] = useState({address: '', wallet: '', network:''});
+
+  const { address:wagmiAddress,  } = useAccountWagmi()
+  const { address:starkAddress } = useAccountStark()
+  
+  useEffect(
+    () => {
+      if (selectedWallet == Wallet.Wagmi){
+        setConfig(() => {return {network: selectedNetwork, wallet: selectedWallet, address: wagmiAddress?? ''}})
+      }else{
+        setConfig(() => {return {network: selectedNetwork, wallet: selectedWallet, address: starkAddress?? ''}})
+      }
+    }
+    ,[selectedNetwork])
 
   async function deposit() {
     setIsLoading(true);
-    switch (selectedNetwork) {
-      case WalletNetwork.EVM: {
+    switch (selectedWallet) {
+      case Wallet.Wagmi: {
         await sleep(1000)
         console.log("depositEVM")
         break;
       }
-      case WalletNetwork.StarkNet: {
+      case Wallet.ArgentX: {
         await sleep(1000)
         console.log("depositStarkNet")
         break;
@@ -67,11 +86,20 @@ export default function DepositHome() {
       {isLoading && <Loading />}
       <HookSection>
         <SectionHeading>Deposit</SectionHeading>
+        
         <Card className='bg-cat-mantle p-5 rounded'>
           <CardBody className='space-y-2'>
-            <Text className='text-cat-text'>Chain</Text>
+            
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" setWalletNetwork={setWalletNetwork} />
+              <Text className='text-cat-text'>Chain</Text>
+              {
+                selectedWallet == Wallet.ArgentX
+                ? <WalletBar></WalletBar>
+                : <RainbowConnectButton></RainbowConnectButton>
+              }
+            </div>
+            <div className='flex flex-row items-center justify-between space-x-2'>
+              <SelectChain items={chains} placeholder="From" setWallet={setWallet} setNetwork={setNetwork}/>
               <ArrowRightIcon className='w-10' />
               <SelectChain items={chains} placeholder="To" />
             </div>
@@ -84,11 +112,12 @@ export default function DepositHome() {
               <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
             </div>
             <DepositButton
-              placeholder='Kamui'
+              placeholder= {walletConfig.address !='' ? 'Kamui' : 'Please Connect First'}
               className='pt-10'
               deposit={deposit}
               loading={isLoading}
               loadingText="Kamuiing"
+              walletConfig={walletConfig}
             />
           </CardBody>
         </Card>

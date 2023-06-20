@@ -47,8 +47,6 @@ const defaultChains: Chain[] = [
     polygonMumbai,
     mainnet,
     polygon,
-    optimism,
-    arbitrum,
 ];
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(

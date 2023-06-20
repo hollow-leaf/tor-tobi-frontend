@@ -4,19 +4,24 @@ interface SelectChainItemProps {
   items: any[]
   placeholder: string
   className?: string
-  setWalletNetwork?: any;
+  setNetwork?: any
+  setWallet?: any
 }
 
-export function SelectChain({ items, placeholder, className, setWalletNetwork }: SelectChainItemProps) {
+export function SelectChain({ items, placeholder, className, setNetwork, setWallet }: SelectChainItemProps) {
   const handleValueChange = (value: any) => {
-    if (setWalletNetwork) {
+    if (setWallet && setNetwork) {
       const selectedChain = items.find((item) => item.key === value);
       if (selectedChain) {
-        setWalletNetwork(selectedChain.value);
+        setWallet(selectedChain.value);
+        setNetwork(selectedChain.key)
       }
     }
   };
   return (
+    <>
+    {/* <div className='flex-grow'>
+    <div className='text-cat-text'>{placeholder}</div> */}
     <Select onValueChange={handleValueChange}>
       <SelectTrigger className={className ? className : "grow bg-cat-mantle text-cat-text"}>
         <SelectValue placeholder={placeholder} />
@@ -35,5 +40,7 @@ export function SelectChain({ items, placeholder, className, setWalletNetwork }:
         }
       </SelectContent>
     </Select>
+    {/* </div> */}
+    </>
   )
 }
