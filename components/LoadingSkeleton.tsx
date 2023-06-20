@@ -9,7 +9,7 @@ export function LoadingSkeleton() {
 
       <Modal isOpen={true} size="full" onClose={onClose}>
         <ModalOverlay
-          bg='blackAlpha.300'
+          bg='RGBA(255, 255, 255, 0.18)'
           backdropFilter='blur(1px)'
         />
       </Modal>

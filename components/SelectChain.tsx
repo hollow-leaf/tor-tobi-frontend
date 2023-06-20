@@ -1,12 +1,16 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import React, { FormEvent, FormEventHandler } from 'react';
 
 interface SelectChainItemProps {
   items: string[]
   placeholder: string
   className?: string
+  onSelectionUpdate: (event: FormEvent<HTMLDivElement>) => void
 }
 
-export function SelectChain({ items, placeholder, className }: SelectChainItemProps) {
+export function SelectChain({ items, placeholder, className, onSelectionUpdate }: SelectChainItemProps) {
+  
+  
   return (
     <Select>
       <SelectTrigger className={className ? className : "grow bg-cat-mantle text-cat-text"}>
@@ -18,6 +22,7 @@ export function SelectChain({ items, placeholder, className }: SelectChainItemPr
             <SelectItem
               key={index}
               value={item}
+              onChange={onSelectionUpdate}
               className='hover:bg-cat-neutral500'
             >
               {item}
