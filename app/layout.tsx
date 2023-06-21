@@ -5,6 +5,7 @@ import StarknetProvider from './providers/StarknetProvider'
 import './globals.css'
 import { Suspense } from 'react'
 import { RainbowProvider } from './providers/WagmiProvider'
+import TobiChakraProvider from './providers/ChakraProvider'
 
 
 export const metadata: Metadata = {
@@ -19,10 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={<p>Loading feed...</p>}>
           <RainbowProvider>
             <StarknetProvider>
-              <ClientOnly>
-                <Header />
-              </ClientOnly>
-              <div className="grow bg-cat-base overflow-y-auto" style={{ height: 'calc(100vh - 66px)' }}>{children}</div>
+              <TobiChakraProvider>
+                <ClientOnly>
+                  <Header />
+                </ClientOnly>  
+                <div className="grow bg-cat-base overflow-y-auto" style={{ height: 'calc(100vh - 66px)' }}>{children}</div>
+              </TobiChakraProvider>
             </StarknetProvider>
           </RainbowProvider>
         </Suspense>
