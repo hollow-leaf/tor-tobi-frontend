@@ -27,3 +27,10 @@ export enum Wallet {
     key: string;
     value: string;
   }
+
+  export interface DepositParameter { 
+    sourceChain: string, 
+    targetChain: string, 
+    token: string,
+    balance: string
+}

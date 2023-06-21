@@ -19,7 +19,7 @@ import { WalletBar, WalletButton } from '@/components/WalletBar'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
 import {depositWagmi, depositStarkNet} from '../services/deposit.service'
 import { DepositDialog } from '../../components/DIalog/DepositDialog'
-import {Wallet, AvailableChains, AvailableTokens, ChainObject, TokenObject} from '../appModel'
+import {Wallet, AvailableChains, AvailableTokens, ChainObject, TokenObject, DepositParameter} from '../appModel'
 
 function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -43,7 +43,7 @@ export default function DepositHome() {
   const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key:'', value: Wallet.Wagmi});
   const [selectedToken, setToken] = useState<TokenObject>({key:AvailableTokens.ETH, value: AvailableTokens.ETH});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
-  const [contractParameter, setContractParameter] = useState({ sourceChain: '', targetChain: '', token: '',balance: '' });
+  const [contractParameter, setContractParameter] = useState<DepositParameter>({ sourceChain: '', targetChain: '', token: '',balance: '' });
   const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
 
   const { address: wagmiAddress, isConnected: isConnectedWagmi } = useAccountWagmi()
