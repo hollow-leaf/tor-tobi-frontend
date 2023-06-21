@@ -60,8 +60,6 @@ const Header = () => {
           <NavigationItem setIsOpen={setIsOpen} href="/get-started" title="Get Started" />
           <NavigationItem setIsOpen={setIsOpen} href="/deposit" title="Deposit" />
           <NavigationItem setIsOpen={setIsOpen} href="/withdraw" title="Withdraw" />
-          <WalletBar></WalletBar>
-          <RainbowConnectButton></RainbowConnectButton>
         </div>
 
         <div className="sm:hidden">

@@ -1,7 +1,8 @@
 'use client'
 import { Box, BoxProps, Button, ButtonProps, HStack, Spinner, Text } from '@chakra-ui/react'
-import { useAccount, useConnectors } from '@starknet-react/core'
+import { useAccount, useBalance, useConnectors } from '@starknet-react/core'
 import { JSXElementConstructor, ReactElement, useMemo } from 'react'
+import Image from 'next/image';
 
 interface walletConnectedProps extends WalletBarProps {
   deposit?: () => void
@@ -15,18 +16,18 @@ export function WalletButton(props: ButtonProps) {
   return (
     <>
       <Button
-        bg="transparent"
-        borderColor="#fab387"
+        bg={!props.disabled ? "transparent" : '#d3d4e4'}
+        borderColor={!props.disabled ? "#fab387" : '#d3d4e4'}
         borderWidth={1}
         borderRadius="5px"
         paddingLeft="10px"
         paddingTop="5px"
         paddingBottom="5px"
         paddingRight="10px"
-        color="#cdd6f4"
+        color={!props.disabled ? "#cdd6f4" : "#3d3f67"}
         isLoading={props.isLoading}
         loadingText={props.loadingText}
-        _hover={{ bg: '#fab387', color: '#1e1e2e' }}
+        _hover={!props.disabled ? { bg: '#fab387', color: '#1e1e2e' } : {}}
         spinner={props.spinner}
         {...props}
       />
@@ -46,7 +47,7 @@ function ConnectWallet() {
           onClick={() => connect(conn)}
           isDisabled={!conn.available()}
         >
-          <Text>Connect wallet</Text>
+          <Text>Connect Wallet</Text>
         </WalletButton>
       ))}
     </HStack>
@@ -56,6 +57,9 @@ function ConnectWallet() {
 function WalletConnected({ ...props }: walletConnectedProps) {
   const { address } = useAccount()
   const { disconnect } = useConnectors()
+  const { data, isLoading, error, refetch } = useBalance({
+    address
+  })
 
   const short = useMemo(() => {
     if (!address) return ''
@@ -65,6 +69,27 @@ function WalletConnected({ ...props }: walletConnectedProps) {
   return (
     <HStack w="full" justifyContent="center">
       <WalletButton
+        style={{ display: 'flex', alignItems: 'center' }}
+      >
+        <div
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: 999,
+            overflow: 'hidden',
+            marginRight: 4,
+          }}
+        >
+          <Image
+            alt='Starknet'
+            src={'https://raw.githubusercontent.com/starknet-io/starknet-website/720804111f233c50e0a8020d031860482ef5e413/public/starknet-mark-light.svg'}
+            width={12}
+            height={12}
+          />
+        </div>
+        Starknet
+      </WalletButton>
+      <WalletButton
         width="100%"
         onClick={props.deposit ? props.deposit : (props.withdraw ? props.withdraw : disconnect)}
         isLoading={props.loading}
@@ -72,6 +97,9 @@ function WalletConnected({ ...props }: walletConnectedProps) {
         spinner={props.spinner}
       >
         {props.placeholder ? props.placeholder : short}
+        {data?.formatted
+          ? ` (${data.formatted} ${data.symbol})`
+          : ''}
       </WalletButton>
     </HStack>
   )

@@ -69,6 +69,7 @@ export function RainbowConnectButton({ children }: any) {
                                                 )}
                                             </div>
                                         )}
+                                        {chain.name}
                                     </WalletButton>
 
                                     <WalletButton onClick={openAccountModal} >
