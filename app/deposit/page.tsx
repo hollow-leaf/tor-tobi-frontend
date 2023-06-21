@@ -19,39 +19,10 @@ import { WalletBar, WalletButton } from '@/components/WalletBar'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
 import {depositWagmi, depositStarkNet} from '../services/deposit.service'
 import { DepositDialog } from '../../components/DIalog/DepositDialog'
+import {Wallet, AvailableChains, AvailableTokens, ChainObject, TokenObject} from '../appModel'
 
 function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
-}
-
-export enum Wallet {
-  ArgentX = 'ArgentX',
-  Wagmi = 'Wagmi',
-}
-
-export enum AvailableChains {
-  Ethereum = 'Ethereum',
-  Goerli = 'Goerli',
-  Sepolia = 'Sepolia',
-  Polygon = 'Polygon',
-  Mumbai = 'Mumbai',
-  BSC = 'BSC',
-  StarkNet = 'StarkNet'
-}
-
-export enum AvailableTokens {
-  ETH = 'ETH',
-  WETH = 'WETH',
-}
-
-export interface ChainObject {
-  key: string;
-  value: Wallet;
-}
-
-interface TokenObject {
-  key: string;
-  value: string;
 }
 
 export default function DepositHome() {
