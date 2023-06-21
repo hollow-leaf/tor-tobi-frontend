@@ -17,6 +17,7 @@ import { useAccount as useAccountStark, useConnectors as useConnectorsStark } fr
 import { useAccount as useAccountWagmi, useDisconnect, useSwitchNetwork, useNetwork } from 'wagmi'
 import { WalletBar, WalletButton } from '@/components/WalletBar'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
+import {depositWagmi, depositStarkNet} from '../services/deposit.service'
 import { DepositDialog } from '../../components/DIalog/DepositDialog'
 
 function sleep(time: number) {
@@ -71,6 +72,7 @@ export default function DepositHome() {
   const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key:'', value: Wallet.Wagmi});
   const [selectedToken, setToken] = useState<TokenObject>({key:AvailableTokens.ETH, value: AvailableTokens.ETH});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
+  const [contractParameter, setContractParameter] = useState({ sourceChain: '', targetChain: '', token: '',balance: '' });
   const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
 
   const { address: wagmiAddress, isConnected: isConnectedWagmi } = useAccountWagmi()
@@ -107,6 +109,10 @@ export default function DepositHome() {
       }
     }
     , [selectedWalletNetwork.key, wagmiAddress, starkAddress])
+  
+  useEffect(()=>{
+    setContractParameter({...contractParameter, sourceChain: selectedWalletNetwork.key, token:selectedToken.key})
+  },[selectedWalletNetwork.key, selectedToken.key])
 
   async function deposit() {
     setIsDepositDialogOpen(true)
@@ -153,7 +159,7 @@ export default function DepositHome() {
             <div className='flex flex-row items-center justify-between space-x-2'>
               <SelectChain items={chains} placeholder="From" setState={{setWalletNetwork}} />
               <ArrowRightIcon className='w-10' color='#cdd6f4' />
-              <SelectChain items={chains} placeholder="To" setState={{}}/>
+              <SelectChain items={chains} placeholder="To" setState={{setContractParameter}}/>
             </div>
             <div className='flex flex-row items-center justify-between pt-5'>
               <Text className='text-cat-text'>You send</Text>
@@ -161,7 +167,11 @@ export default function DepositHome() {
             </div>
             <div className='flex flex-row items-center justify-between space-x-4'>
               <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' setState={{setToken}}/>
-              <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
+              <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' 
+              onChange={(e) => {
+                const value = e.target.value
+                setContractParameter({...contractParameter, balance: value})
+              }} />
             </div>
             <ProcessButton
               placeholder={(walletConfig.address != '' && walletConfig.network != '') ? 'Kamui' : 'Please Connect First'}

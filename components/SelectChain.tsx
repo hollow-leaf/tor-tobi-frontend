@@ -6,7 +6,8 @@ interface SelectChainItemProps {
   className?: string
   setState: {
     setWalletNetwork?: any,
-    setToken?: any
+    setToken?: any,
+    setContractParameter?: any
   }
 }
 
@@ -21,7 +22,16 @@ export function SelectChain({ items, placeholder, className, setState }: SelectC
     if (setState.setToken) {
       const selectedToken = items.find((item) => item.key === value);
       if (selectedToken) {
-        setState.setToken(selectedToken.key)
+        setState.setToken(selectedToken)
+      }
+    }
+    if (setState.setContractParameter) {
+      const selectedChain = items.find((item) => item.key === value);
+      if (selectedChain) {
+        setState.setContractParameter((preState:any) => ({
+          ...preState,
+          targetChain: selectedChain.key
+        }))
       }
     }
   };
