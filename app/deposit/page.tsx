@@ -17,6 +17,7 @@ import { useAccount as useAccountStark, useConnectors as useConnectorsStark } fr
 import { useAccount as useAccountWagmi, useDisconnect, useSwitchNetwork, useNetwork } from 'wagmi'
 import { WalletBar, WalletButton } from '@/components/WalletBar'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
+import { DepositDialog } from '../../components/DIalog/DepositDialog'
 
 function sleep(time: number) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -70,6 +71,7 @@ export default function DepositHome() {
   const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key:'', value: Wallet.Wagmi});
   const [selectedToken, setToken] = useState<TokenObject>({key:AvailableTokens.ETH, value: AvailableTokens.ETH});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
+  const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
 
   const { address: wagmiAddress, isConnected: isConnectedWagmi } = useAccountWagmi()
   const { address: starkAddress, isConnected: isConnectedStark } = useAccountStark()
@@ -107,25 +109,26 @@ export default function DepositHome() {
     , [selectedWalletNetwork.key, wagmiAddress, starkAddress])
 
   async function deposit() {
-    setIsLoading(true);
-    switch (selectedWalletNetwork.value) {
-      case Wallet.Wagmi: {
-        await sleep(1000)
-        console.log("depositEVM", chain?.name)
-        break;
-      }
-      case Wallet.ArgentX: {
-        await sleep(1000)
-        console.log("depositStarkNet", chain?.name)
-        break;
-      }
-      default: {
-        await sleep(1000)
-        console.log("depositDefault")
-        break;
-      }
-    }
-    setIsLoading(false)
+    setIsDepositDialogOpen(true)
+    // setIsLoading(true);
+    // switch (selectedWallet) {
+    //   case Wallet.Wagmi: {
+    //     await sleep(1000)
+    //     console.log("depositEVM", chain?.name)
+    //     break;
+    //   }
+    //   case Wallet.ArgentX: {
+    //     await sleep(1000)
+    //     console.log("depositStarkNet", chain?.name)
+    //     break;
+    //   }
+    //   default: {
+    //     await sleep(1000)
+    //     console.log("depositDefault")
+    //     break;
+    //   }
+    // }
+    // setIsLoading(false)
   }
 
   return (
@@ -170,6 +173,7 @@ export default function DepositHome() {
             />
           </CardBody>
         </Card>
+        
       </HookSection>
     </div>
 
