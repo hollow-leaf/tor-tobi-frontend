@@ -4,17 +4,24 @@ interface SelectChainItemProps {
   items: any[]
   placeholder: string
   className?: string
-  setNetwork?: any
-  setWallet?: any
+  setState: {
+    setWalletNetwork?: any,
+    setToken?: any
+  }
 }
 
-export function SelectChain({ items, placeholder, className, setNetwork, setWallet }: SelectChainItemProps) {
+export function SelectChain({ items, placeholder, className, setState }: SelectChainItemProps) {
   const handleValueChange = (value: any) => {
-    if (setWallet && setNetwork) {
+    if (setState.setWalletNetwork) {
       const selectedChain = items.find((item) => item.key === value);
       if (selectedChain) {
-        setWallet(selectedChain.value);
-        setNetwork(selectedChain.key)
+        setState.setWalletNetwork(selectedChain);
+      }
+    }
+    if (setState.setToken) {
+      const selectedToken = items.find((item) => item.key === value);
+      if (selectedToken) {
+        setState.setToken(selectedToken.key)
       }
     }
   };

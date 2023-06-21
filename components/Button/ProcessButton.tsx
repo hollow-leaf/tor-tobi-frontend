@@ -1,16 +1,15 @@
 import { Box, BoxProps, Button, ButtonProps } from '@chakra-ui/react'
-import { WalletButton } from '../WalletBar'
 
 export type WalletBarProps = BoxProps
 
-interface walletConnectedProps extends WalletBarProps {
-  deposit?: () => void
+export interface walletProcessProps extends WalletBarProps {
+  process?: () => void
   loading?: boolean
   loadingText?: string
   walletConfig: any
 }
 
-export function ProcessButton(props: ButtonProps) {
+export function FormatButton(props: ButtonProps) {
   return (
     <>
       <Button
@@ -33,19 +32,19 @@ export function ProcessButton(props: ButtonProps) {
   )
 }
 
-export function DepositButton({ ...props }: walletConnectedProps) {
+export function ProcessButton({ ...props }: walletProcessProps) {
   return (
     <>
       <Box {...props}>
-        <ProcessButton
+        <FormatButton
           width="100%"
-          onClick={props.deposit}
+          onClick={props.process}
           isLoading={props.loading}
           loadingText={props.loadingText}
           disabled={(props.walletConfig.address != '' && props.walletConfig.network != '') ? false : true}
         >
           {props.placeholder}
-        </ProcessButton>
+        </FormatButton>
       </Box>
     </>
   )

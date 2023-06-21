@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { ArrowRightIcon } from 'lucide-react'
 import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
-import { DepositButton } from '../../components/Button/DepositeButton'
+import { ProcessButton } from '../../components/Button/ProcessButton'
 import Loading from '../loading'
 import { useAccount as useAccountStark, useConnectors as useConnectorsStark } from '@starknet-react/core'
 import { useAccount as useAccountWagmi, useDisconnect, useSwitchNetwork, useNetwork } from 'wagmi'
@@ -37,9 +37,19 @@ export enum AvailableChains {
   StarkNet = 'StarkNet'
 }
 
+export enum AvailableTokens {
+  ETH = 'ETH',
+  WETH = 'WETH',
+}
+
 interface ChainObject {
   key: string;
   value: Wallet;
+}
+
+interface TokenObject {
+  key: string;
+  value: string;
 }
 
 export default function DepositHome() {
@@ -51,22 +61,25 @@ export default function DepositHome() {
     { key: AvailableChains.StarkNet, value: Wallet.ArgentX },
   ]
 
-  const tokens = new Array('USDC', 'USDT', 'DAI', 'WETH')
+  const tokens: TokenObject[] = [
+    { key: AvailableTokens.ETH, value: AvailableTokens.ETH },
+    { key: AvailableTokens.WETH, value: AvailableTokens.WETH },
+  ]
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedWallet, setWallet] = useState(Wallet.Wagmi);
-  const [selectedNetwork, setNetwork] = useState('');
+  const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key:'', value: Wallet.Wagmi});
+  const [selectedToken, setToken] = useState<TokenObject>({key:AvailableTokens.ETH, value: AvailableTokens.ETH});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
 
-  const { address: wagmiAddress, isConnected: isConnectedWagmi, connector } = useAccountWagmi()
+  const { address: wagmiAddress, isConnected: isConnectedWagmi } = useAccountWagmi()
   const { address: starkAddress, isConnected: isConnectedStark } = useAccountStark()
   const { chain } = useNetwork()
   const { switchNetwork } = useSwitchNetwork()
 
   useEffect(
     () => {
-      if (isConnectedWagmi && selectedWallet == Wallet.Wagmi) {
-        switch (selectedNetwork) {
+      if (isConnectedWagmi && selectedWalletNetwork.value == Wallet.Wagmi) {
+        switch (selectedWalletNetwork.key) {
           case AvailableChains.Goerli: {
             switchNetwork?.(5)
             break;
@@ -80,22 +93,22 @@ export default function DepositHome() {
             break;
           }
         }
-        setConfig(() => { return { network: selectedNetwork, wallet: selectedWallet, address: wagmiAddress ?? '' } })
-      } else if (isConnectedStark && selectedWallet == Wallet.ArgentX) {
-        setConfig(() => { return { network: selectedNetwork, wallet: selectedWallet, address: starkAddress ?? '' } })
+        setConfig(() => { return { network: selectedWalletNetwork.key, wallet: selectedWalletNetwork.value, address: wagmiAddress ?? '' } })
+      } else if (isConnectedStark && selectedWalletNetwork.value == Wallet.ArgentX) {
+        setConfig(() => { return { network: selectedWalletNetwork.key, wallet: selectedWalletNetwork.value, address: starkAddress ?? '' } })
       } else {
-        if (selectedWallet == Wallet.Wagmi) {
-          setConfig(() => { return { network: selectedNetwork, wallet: selectedWallet, address: wagmiAddress ?? '' } })
+        if (selectedWalletNetwork.value == Wallet.Wagmi) {
+          setConfig(() => { return { network: selectedWalletNetwork.key, wallet: selectedWalletNetwork.value, address: wagmiAddress ?? '' } })
         } else {
-          setConfig(() => { return { network: selectedNetwork, wallet: selectedWallet, address: starkAddress ?? '' } })
+          setConfig(() => { return { network: selectedWalletNetwork.key, wallet: selectedWalletNetwork.value, address: starkAddress ?? '' } })
         }
       }
     }
-    , [selectedNetwork, wagmiAddress, starkAddress])
+    , [selectedWalletNetwork.key, wagmiAddress, starkAddress])
 
   async function deposit() {
     setIsLoading(true);
-    switch (selectedWallet) {
+    switch (selectedWalletNetwork.value) {
       case Wallet.Wagmi: {
         await sleep(1000)
         console.log("depositEVM", chain?.name)
@@ -127,30 +140,30 @@ export default function DepositHome() {
             <div className='flex flex-row items-center justify-between space-x-2'>
               <Text className='text-cat-text'>Chain</Text>
               {
-                selectedNetwork !== ''
-                  ? selectedWallet == Wallet.ArgentX
+                selectedWalletNetwork.key !== ''
+                  ? selectedWalletNetwork.value == Wallet.ArgentX
                     ? <WalletBar></WalletBar>
                     : <RainbowConnectButton></RainbowConnectButton>
                   : <WalletButton disabled={true}>{'Please Select Network'}</WalletButton>
               }
             </div>
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" setWallet={setWallet} setNetwork={setNetwork} />
+              <SelectChain items={chains} placeholder="From" setState={{setWalletNetwork}} />
               <ArrowRightIcon className='w-10' color='#cdd6f4' />
-              <SelectChain items={chains} placeholder="To" />
+              <SelectChain items={chains} placeholder="To" setState={{}}/>
             </div>
             <div className='flex flex-row items-center justify-between pt-5'>
               <Text className='text-cat-text'>You send</Text>
               <Text className='text-cat-text'>Balance: </Text>
             </div>
             <div className='flex flex-row items-center justify-between space-x-4'>
-              <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' />
+              <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' setState={{setToken}}/>
               <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' />
             </div>
-            <DepositButton
+            <ProcessButton
               placeholder={(walletConfig.address != '' && walletConfig.network != '') ? 'Kamui' : 'Please Connect First'}
               className='pt-10'
-              deposit={deposit}
+              process={deposit}
               loading={isLoading}
               loadingText="Kamuiing"
               walletConfig={walletConfig}
