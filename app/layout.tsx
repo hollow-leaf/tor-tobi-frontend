@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ClientOnly>
                 <Header />
               </ClientOnly>
-              <div className="grow bg-cat-base overflow-y-auto" style={{ height: 'calc(100vh - 68px)' }}>{children}</div>
+              <div className="grow bg-cat-base overflow-y-auto" style={{ height: 'calc(100vh - 66px)' }}>{children}</div>
             </StarknetProvider>
           </RainbowProvider>
         </Suspense>

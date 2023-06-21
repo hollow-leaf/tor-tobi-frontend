@@ -48,7 +48,6 @@ export default function DepositHome() {
     { key: AvailableChains.Goerli, value: Wallet.Wagmi },
     { key: AvailableChains.Sepolia, value: Wallet.Wagmi },
     { key: AvailableChains.Mumbai, value: Wallet.Wagmi },
-    { key: AvailableChains.BSC, value: Wallet.Wagmi },
     { key: AvailableChains.StarkNet, value: Wallet.ArgentX },
   ]
 
@@ -78,10 +77,6 @@ export default function DepositHome() {
           }
           case AvailableChains.Mumbai: {
             switchNetwork?.(80001)
-            break;
-          }
-          case AvailableChains.BSC: {
-            switchNetwork?.(56)
             break;
           }
         }
