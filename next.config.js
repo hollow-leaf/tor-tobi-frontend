@@ -8,9 +8,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    appDir: true,
-},
   basePath: isProd ? '/frontend' : '',
   assetPrefix: './',
   webpack: config => {
