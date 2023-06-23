@@ -2295,6 +2295,7 @@ packages:
 
   /@next/swc-win32-arm64-msvc@13.2.0:
     resolution: {integrity: sha512-NM5h2gEMe8EtvOeRU3vRM83tq1xo6Qvhuz0xJem/176SAMxbqzAz4LLP3l9VyUI3SIzGyiztvF/1c0jqeq7UEA==}
+
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
