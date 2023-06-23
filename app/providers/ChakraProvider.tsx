@@ -26,7 +26,7 @@ const theme = extendTheme({
       sapphire: '#74c7ec',
       blue: '#89b4fa',
       lavender: '#b4befe',
-      text: '#cdd6f4',
+      text: '#11111b',
       subtext: '#bac2de',
       overlay: '#9399b2',
       surface: '#45475a',
@@ -45,14 +45,14 @@ const theme = extendTheme({
   },
 })
 
-const Providers = ({ children }: { children: ReactNode }) => {
+const TobiChakraProvider = ({ children }: { children: ReactNode }) => {
   return (
     <CacheProvider>
-      <ChakraProvider resetCSS theme={theme}>
+      <ChakraProvider theme={theme}>
         {children}
       </ChakraProvider>
     </CacheProvider>
   )
 }
 
-export default Providers
+export default TobiChakraProvider

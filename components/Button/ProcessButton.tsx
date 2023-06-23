@@ -7,6 +7,27 @@ export interface walletProcessProps extends WalletBarProps {
   loading?: boolean
   loadingText?: string
   walletConfig: any
+  disabled?: boolean
+  textColor?: string
+}
+
+export function ProcessButton({ ...props }: walletProcessProps) {
+  return (
+    <>
+      <Box {...props}>
+        <FormatButton
+          width="100%"
+          onClick={props.process}
+          isLoading={props.loading}
+          loadingText={props.loadingText}
+          disabled={props.disabled ? props.disabled : false}
+          textColor={props.textColor}
+        >
+          {props.placeholder}
+        </FormatButton>
+      </Box>
+    </>
+  )
 }
 
 export function FormatButton(props: ButtonProps) {
@@ -21,31 +42,13 @@ export function FormatButton(props: ButtonProps) {
         paddingTop="5px"
         paddingBottom="5px"
         paddingRight="10px"
-        color={!props.disabled ? "#cdd6f4" : "#3d3f67"}
+        color={!props.disabled ? props.textColor : "#3d3f67"}
         isLoading={props.isLoading}
         loadingText={props.loadingText}
         _hover={!props.disabled ? { bg: '#fab387', color: '#1e1e2e' } : {}}
         spinner={props.spinner}
         {...props}
       />
-    </>
-  )
-}
-
-export function ProcessButton({ ...props }: walletProcessProps) {
-  return (
-    <>
-      <Box {...props}>
-        <FormatButton
-          width="100%"
-          onClick={props.process}
-          isLoading={props.loading}
-          loadingText={props.loadingText}
-          disabled={(props.walletConfig.address != '' && props.walletConfig.network != '') ? false : true}
-        >
-          {props.placeholder}
-        </FormatButton>
-      </Box>
     </>
   )
 }

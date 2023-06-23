@@ -44,7 +44,14 @@ const Header = () => {
   return (
     <div className="py-4 px-8 bg-cat-crust w-full flex justify-between">
       <div className="flex items-center sm:text-center ">
-        <Link href="/" passHref className="text-xl font-bold text-cat-text">
+        <Link href="/" passHref className="text-xl font-bold text-cat-text flex">
+          <Image
+            alt='Tobi'
+            src={'tobi.png'}
+            width={30}
+            height={24}
+            className="mx-2"
+          />
           Tobi
         </Link>
       </div>

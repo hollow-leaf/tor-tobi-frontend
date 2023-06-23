@@ -9,43 +9,26 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { ArrowRightIcon } from 'lucide-react'
-import { SelectChain } from '../../components/SelectChain'
-import { Input } from '@/components/ui/input'
+import { InputAmount, SelectChain } from '../../components/SelectChain'
 import { ProcessButton } from '../../components/Button/ProcessButton'
-import Loading from '../loading'
 import { useAccount as useAccountStark, useConnectors as useConnectorsStark } from '@starknet-react/core'
-import { useAccount as useAccountWagmi, useDisconnect, useSwitchNetwork, useNetwork } from 'wagmi'
+import { useAccount as useAccountWagmi, useSwitchNetwork, useNetwork } from 'wagmi'
 import { WalletBar, WalletButton } from '@/components/WalletBar'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
-import {depositWagmi, depositStarkNet} from '../services/deposit.service'
 import { DepositDialog } from '../../components/DIalog/DepositDialog'
-import {Wallet, AvailableChains, AvailableTokens, ChainObject, TokenObject, DepositParameter} from '../appModel'
+import { Wallet, AvailableChains, AvailableTokens, ChainObject, TokenObject, DepositParameter } from '../appModel'
+import { AvailableChainsObject, AvailableTokensObject } from '../../utils/util'
 
-function sleep(time: number) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
 
 export default function DepositHome() {
 
-  const chains: ChainObject[] = [
-    { key: AvailableChains.Goerli, value: Wallet.Wagmi },
-    { key: AvailableChains.Sepolia, value: Wallet.Wagmi },
-    { key: AvailableChains.Mumbai, value: Wallet.Wagmi },
-    { key: AvailableChains.StarkNet, value: Wallet.ArgentX },
-  ]
-
-  const tokens: TokenObject[] = [
-    { key: AvailableTokens.ETH, value: AvailableTokens.ETH },
-    { key: AvailableTokens.WETH, value: AvailableTokens.WETH },
-  ]
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key:'', value: Wallet.Wagmi});
-  const [selectedToken, setToken] = useState<TokenObject>({key:AvailableTokens.ETH, value: AvailableTokens.ETH});
+  // const [isLoading, setIsLoading] = useState(false);
+  const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key: '', value: Wallet.Wagmi});
+  const [selectedToken, setToken] = useState<TokenObject>({key: '', value: ''});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
-  const [contractParameter, setContractParameter] = useState<DepositParameter>({ sourceChain: '', targetChain: '', token: '',balance: '' });
+  const [contractParameter, setContractParameter] = useState<DepositParameter>({ sourceChain: '', targetChain: '', token: '', amount: '' });
   const [isDepositDialogOpen, setIsDepositDialogOpen] = useState(false);
-
+  
   const { address: wagmiAddress, isConnected: isConnectedWagmi } = useAccountWagmi()
   const { address: starkAddress, isConnected: isConnectedStark } = useAccountStark()
   const { chain } = useNetwork()
@@ -85,32 +68,17 @@ export default function DepositHome() {
     setContractParameter({...contractParameter, sourceChain: selectedWalletNetwork.key, token:selectedToken.key})
   },[selectedWalletNetwork.key, selectedToken.key])
 
-  async function deposit() {
+  async function openDepositDialog() {
     setIsDepositDialogOpen(true)
-    // setIsLoading(true);
-    // switch (selectedWallet) {
-    //   case Wallet.Wagmi: {
-    //     await sleep(1000)
-    //     console.log("depositEVM", chain?.name)
-    //     break;
-    //   }
-    //   case Wallet.ArgentX: {
-    //     await sleep(1000)
-    //     console.log("depositStarkNet", chain?.name)
-    //     break;
-    //   }
-    //   default: {
-    //     await sleep(1000)
-    //     console.log("depositDefault")
-    //     break;
-    //   }
-    // }
-    // setIsLoading(false)
+  }
+
+  async function confirmKamui(data: any) {
+    console.log('data: ', data)
   }
 
   return (
     <div className="max-w-70 pt-12 mb-12 mx-4 lg:mx-0">
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       <HookSection>
         <SectionHeading>Deposit</SectionHeading>
 
@@ -128,34 +96,39 @@ export default function DepositHome() {
               }
             </div>
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" setState={{setWalletNetwork}} />
+              <SelectChain items={AvailableChainsObject} placeholder="From" setState={{setWalletNetwork}} />
               <ArrowRightIcon className='w-10' color='#cdd6f4' />
-              <SelectChain items={chains} placeholder="To" setState={{setContractParameter}}/>
+              <SelectChain items={AvailableChainsObject} placeholder="To" setState={{setContractParameter}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
             </div>
             <div className='flex flex-row items-center justify-between pt-5'>
-              <Text className='text-cat-text'>You send</Text>
-              <Text className='text-cat-text'>Balance: </Text>
+              <Text className='text-cat-text'>Amount</Text>
             </div>
             <div className='flex flex-row items-center justify-between space-x-4'>
-              <SelectChain items={tokens} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' setState={{setToken}}/>
-              <Input className='bg-cat-mantle text-cat-text' type='number' placeholder='0.00' 
-              onChange={(e) => {
-                const value = e.target.value
-                setContractParameter({...contractParameter, balance: value})
-              }} />
+              <SelectChain items={AvailableTokensObject} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' setState={{setToken}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
+              <InputAmount setState={{setContractParameter}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
             </div>
             <ProcessButton
-              placeholder={(walletConfig.address != '' && walletConfig.network != '') ? 'Kamui' : 'Please Connect First'}
+              placeholder={'Deposit'}
+              loadingText={'Deposit'}
+              loading={false}
               className='pt-10'
-              process={deposit}
-              loading={isLoading}
-              loadingText="Kamuiing"
+              process={openDepositDialog}
               walletConfig={walletConfig}
+              textColor='#cdd6f4'
+              disabled={(walletConfig.address == '' || walletConfig.network == '' || contractParameter.sourceChain == '' || contractParameter.targetChain == '' || contractParameter.token == '' || contractParameter.amount == '')}
             />
           </CardBody>
         </Card>
-        
       </HookSection>
+      <DepositDialog 
+        isOpen={isDepositDialogOpen} 
+        onClose={setIsDepositDialogOpen} 
+        onConfirm={confirmKamui} 
+        contractParameter={contractParameter} 
+        walletConfig={walletConfig}
+        selectedWalletNetwork={selectedWalletNetwork}
+        chain={chain}
+      />
     </div>
 
   )
