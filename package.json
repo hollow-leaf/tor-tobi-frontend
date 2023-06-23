@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "export NODE_ENV=production && next build && touch out/.nojekyll",
+    "build": "export NODE_ENV=production && next build",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix"
