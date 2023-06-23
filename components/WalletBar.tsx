@@ -24,7 +24,7 @@ export function WalletButton(props: ButtonProps) {
         paddingTop="5px"
         paddingBottom="5px"
         paddingRight="10px"
-        color={!props.disabled ? "#cdd6f4" : "#3d3f67"}
+        color={!props.disabled ? '#cdd6f4' : '#cdd6f4'}
         isLoading={props.isLoading}
         loadingText={props.loadingText}
         _hover={!props.disabled ? { bg: '#fab387', color: '#1e1e2e' } : {}}

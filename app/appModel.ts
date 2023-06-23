@@ -32,5 +32,5 @@ export enum Wallet {
     sourceChain: string, 
     targetChain: string, 
     token: string,
-    balance: string
+    amount: string
 }

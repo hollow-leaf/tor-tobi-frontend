@@ -15,7 +15,8 @@ module.exports = {
         mauve: '#cba6f7',
         red: '#f38ba8',
         maroon: '#eba0ac',
-        peach: '#fab387',
+        peach300: '#fab387',
+        peach400: '#f67c41',
         yellow: '#f9e2af',
         green: '#a6e3a1',
         teal: '#94e2d5',
@@ -35,6 +36,7 @@ module.exports = {
         neutral500: '#737373',
         orange500: '#ea580c',
         slate700: '#334155',
+        white: '#ffffff'
       },
     },
     styles: {
