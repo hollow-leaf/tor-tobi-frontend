@@ -14,6 +14,7 @@ module.exports = {
         pink: '#f5c2e7',
         mauve: '#cba6f7',
         red: '#f38ba8',
+        red600: '#d32b66',
         maroon: '#eba0ac',
         peach300: '#fab387',
         peach400: '#f67c41',
