@@ -100,12 +100,16 @@ export default function DepositHome() {
               <ArrowRightIcon className='w-10' color='#cdd6f4' />
               <SelectChain items={AvailableChainsObject} placeholder="To" setState={{setContractParameter}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
             </div>
-            <div className='flex flex-row items-center justify-between pt-5'>
-              <Text className='text-cat-text'>Amount</Text>
-            </div>
-            <div className='flex flex-row items-center justify-between space-x-4'>
-              <SelectChain items={AvailableTokensObject} placeholder="Token" className='grow bg-cat-mantle text-cat-text basis-1/4' setState={{setToken}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
-              <InputAmount setState={{setContractParameter}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
+
+            <div className='flex flex-row items-center justify-between space-x-4 pt-5'>
+              <div className='flex-col basis-1/4'>
+                <Text className='text-cat-text pb-2'>Token</Text>
+                <SelectChain items={AvailableTokensObject} placeholder="Token" className='bg-cat-mantle text-cat-text' setState={{setToken}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
+              </div>
+              <div className='flex-col basis-3/4'>
+                <Text className='text-cat-text pb-2'>Amount</Text>
+                <InputAmount setState={{setContractParameter}} disabled={(selectedWalletNetwork.key == '') ? true : false}/>
+              </div>
             </div>
             <ProcessButton
               placeholder={'Deposit'}
