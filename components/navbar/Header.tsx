@@ -5,8 +5,6 @@ import burgerMenu from '../../public/svg/burger-menu-svgrepo-com.svg'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { WalletBar } from '../WalletBar'
-import { RainbowConnectButton } from '../Button/RainbowConnectButton'
 
 interface NavigationItemProps {
   href: string
@@ -26,7 +24,7 @@ const NavigationItem = ({ href, title, setIsOpen }: NavigationItemProps) => {
         passHref
         onClick={() => setIsOpen(false)}
         className={`${isActive ? 'border-b-2 ' : 'border-b-0'
-          } border-cat-peach py-1 transition ease-in-out delay-200  text-cat-text hover: bg-transparent hover: hover:text-cat-peach`}
+          } border-cat-peach300 py-1 transition ease-in-out delay-200  text-cat-text hover: bg-transparent hover: hover:text-cat-peach300`}
       >
         {title}
       </Link>
@@ -44,10 +42,10 @@ const Header = () => {
   return (
     <div className="py-4 px-8 bg-cat-crust w-full flex justify-between">
       <div className="flex items-center sm:text-center ">
-        <Link href="/" passHref className="text-xl font-bold text-cat-text flex">
+        <Link href="/home" passHref className="text-xl font-bold text-cat-text flex">
           <Image
             alt='Tobi'
-            src={'tobi.png'}
+            src='/frontend/tobi.png'
             width={30}
             height={24}
             className="mx-2"
@@ -63,8 +61,9 @@ const Header = () => {
               : `hidden sm:flex gap-4`
           }
         >
-          <NavigationItem setIsOpen={setIsOpen} href="/" title="Home" />
-          <NavigationItem setIsOpen={setIsOpen} href="/get-started" title="Get Started" />
+          <NavigationItem setIsOpen={setIsOpen} href="/home" title="Home" />
+          {/* <NavigationItem setIsOpen={setIsOpen} href="/get-started" title="Get Started" /> */}
+          <NavigationItem setIsOpen={setIsOpen} href="/dashboard" title="Dashboard" />
           <NavigationItem setIsOpen={setIsOpen} href="/deposit" title="Deposit" />
           <NavigationItem setIsOpen={setIsOpen} href="/withdraw" title="Withdraw" />
         </div>

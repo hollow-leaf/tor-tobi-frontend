@@ -8,7 +8,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: isProd ? '/frontend' : '',
+  basePath: '/frontend',
   assetPrefix: './',
   webpack: config => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
