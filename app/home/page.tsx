@@ -6,12 +6,12 @@ const Home = () => {
       <div className=" text-cat-text text-7xl font-bold text-center md:text-left lg:text-center ">
         Tobi
       </div>
-      <div className="text-cat-peach text-4xl mt-8 font-bold text-center md:text-left lg:text-center ">
+      <div className="text-cat-peach300 text-4xl mt-8 font-bold text-center md:text-left lg:text-center ">
         Time-lock Omni Bridge Interface
       </div>
       <div className="mt-8">
-        <Link passHref href="/get-started" className="text-cat-neutral500 text-xl ">
-          <div className=" py-2 px-4 hover:bg-cat-slate700  bg-cat-base border-solid border-2 rounded-md border-cat-neutral500">
+        <Link passHref href="/deposit" className="text-cat-neutral500 text-xl ">
+          <div className=" py-2 px-4 hover:bg-cat-slate700 text-cat-text bg-cat-base border-solid border-2 rounded-md border-cat-neutral500">
             Get Started
           </div>
         </Link>

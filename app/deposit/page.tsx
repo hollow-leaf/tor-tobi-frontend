@@ -16,7 +16,7 @@ import { useAccount as useAccountWagmi, useSwitchNetwork, useNetwork } from 'wag
 import { WalletBar, WalletButton } from '@/components/WalletBar'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
 import { DepositDialog } from '../../components/DIalog/DepositDialog'
-import { Wallet, AvailableChains, AvailableTokens, ChainObject, TokenObject, DepositParameter } from '../appModel'
+import { Wallet, AvailableChains, ChainObject, TokenObject, DepositParameter } from '../appModel'
 import { AvailableChainsObject, AvailableTokensObject } from '../../utils/util'
 
 

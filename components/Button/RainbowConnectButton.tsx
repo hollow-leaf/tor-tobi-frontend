@@ -1,6 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Image from 'next/image';
-import { Box, BoxProps, Button, ButtonProps, } from '@chakra-ui/react'
 import { WalletButton } from '../WalletBar'
 
 export function RainbowConnectButton({ children }: any) {
