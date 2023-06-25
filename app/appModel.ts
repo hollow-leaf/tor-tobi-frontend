@@ -33,4 +33,10 @@ export enum Wallet {
     targetChain: string, 
     token: string,
     amount: string
-}
+  }
+
+  export interface WithdrawParameter { 
+    chain: string, 
+    proof: string, 
+    token: string
+  }
