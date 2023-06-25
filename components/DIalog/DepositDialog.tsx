@@ -41,7 +41,7 @@ export function DepositDialog({ ...props }: DepositDialogProps) {
 
   const kamuiAddresses = useKamuiContractAddressHook()
 
-  let keccak256TransactionHash: string = ''
+  let transactionHash: string = ''
 
   const handleClose = () => {
     props.onClose(false)
@@ -70,8 +70,8 @@ export function DepositDialog({ ...props }: DepositDialogProps) {
             const { hash } = await writeContract(request)
             await waitForTransaction({ hash })
 
-            keccak256TransactionHash = ethers.utils.keccak256(hash)
-            setTransactionHashState(keccak256TransactionHash)
+            transactionHash = hash
+            setTransactionHashState(transactionHash)
           }
           break;
         }
@@ -87,7 +87,7 @@ export function DepositDialog({ ...props }: DepositDialogProps) {
         }
       }
       setIsLoading(false)
-      if (keccak256TransactionHash !== '') {
+      if (transactionHash !== '') {
         setIsTransactionHashDialog(true)
       }
     } catch (error) {
