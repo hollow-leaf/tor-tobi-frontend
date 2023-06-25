@@ -52,6 +52,7 @@ const DashboardHome = () => {
     setIsLoadingBalance(true)
 
     const data = await readContracts({
+      // @ts-ignore
       contracts: [goerliContract, sepoliaContract, mumbaiContract],
     })
     setGoerliBalance(formatEther(BigNumber.from(data[0].result)))
