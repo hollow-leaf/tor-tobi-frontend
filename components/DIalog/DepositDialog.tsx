@@ -22,30 +22,26 @@ import { prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/
 import { useKamuiContractAddressHook } from '../../hooks/useContractAddress.hook'
 import { kamuiABI } from '../../app/contracts/Kamui'
 import { parseEther } from 'ethers/lib/utils'
-import Image from 'next/image';
+import { ethers } from 'ethers'
 
 export interface DepositDialogProps {
   isOpen: boolean
   onClose: any
-  onConfirm: any
   contractParameter: DepositParameter
   walletConfig: any
   selectedWalletNetwork: any
   chain: any
 }
 
-// export function TransitionExample() {
 export function DepositDialog({ ...props }: DepositDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [transactionHashState, setTransactionHashState] = useState('');
   const [isTransactionHashDialog, setIsTransactionHashDialog] = useState(false);
-  // const [isCopyOpen, setIsCopyOpen] = useState(false);
-  const [isCopyAlertOpen, setIsCopyAlertOpen] = useState(false)
   const cancelRef = React.useRef<HTMLButtonElement>(null)
 
   const kamuiAddresses = useKamuiContractAddressHook()
 
-  let transactionHash: string = ''
+  let keccak256TransactionHash: string = ''
 
   const handleClose = () => {
     props.onClose(false)
@@ -73,9 +69,9 @@ export function DepositDialog({ ...props }: DepositDialogProps) {
     
             const { hash } = await writeContract(request)
             await waitForTransaction({ hash })
-            // const hash = '0x1047d21334e4d1f99cb3180e79b33a0a3a0fa23ab4cdb44d9f68e37d5ea7d122'
-            transactionHash = hash
-            setTransactionHashState(hash)
+
+            keccak256TransactionHash = ethers.utils.keccak256(hash)
+            setTransactionHashState(keccak256TransactionHash)
           }
           break;
         }
@@ -91,7 +87,7 @@ export function DepositDialog({ ...props }: DepositDialogProps) {
         }
       }
       setIsLoading(false)
-      if (transactionHash !== '') {
+      if (keccak256TransactionHash !== '') {
         setIsTransactionHashDialog(true)
       }
     } catch (error) {
@@ -164,7 +160,7 @@ export function DepositDialog({ ...props }: DepositDialogProps) {
           <AlertDialogBody className='flex items-center justify-between' fontWeight='bold'> 
             <Input className='bg-cat-white hover:opacity-0' size='md' value={transactionHashState} isReadOnly={true}/>
             <div className='pl-2'>
-              <Tooltip hasArrow label='Copy!' bg='red.600'>
+              <Tooltip hasArrow label='Copy Proof!' bg='red.600'>
                 <IconButton 
                   className='bg-cat-white'
                   aria-label='Copy text' 

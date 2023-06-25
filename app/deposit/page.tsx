@@ -22,7 +22,6 @@ import { AvailableChainsObject, AvailableTokensObject } from '../../utils/util'
 
 export default function DepositHome() {
 
-  // const [isLoading, setIsLoading] = useState(false);
   const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key: '', value: Wallet.Wagmi});
   const [selectedToken, setToken] = useState<TokenObject>({key: '', value: ''});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
@@ -65,20 +64,15 @@ export default function DepositHome() {
     , [selectedWalletNetwork.key, wagmiAddress, starkAddress])
   
   useEffect(()=>{
-    setContractParameter({...contractParameter, sourceChain: selectedWalletNetwork.key, token:selectedToken.key})
+    setContractParameter({...contractParameter, sourceChain: selectedWalletNetwork.key, token: selectedToken.key})
   },[selectedWalletNetwork.key, selectedToken.key])
 
   async function openDepositDialog() {
     setIsDepositDialogOpen(true)
   }
 
-  async function confirmKamui(data: any) {
-    console.log('data: ', data)
-  }
-
   return (
     <div className="max-w-70 pt-12 mb-12 mx-4 lg:mx-0">
-      {/* {isLoading && <Loading />} */}
       <HookSection>
         <SectionHeading>Deposit</SectionHeading>
 
@@ -127,7 +121,6 @@ export default function DepositHome() {
       <DepositDialog 
         isOpen={isDepositDialogOpen} 
         onClose={setIsDepositDialogOpen} 
-        onConfirm={confirmKamui} 
         contractParameter={contractParameter} 
         walletConfig={walletConfig}
         selectedWalletNetwork={selectedWalletNetwork}
