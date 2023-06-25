@@ -3,45 +3,30 @@
 import HookSection from '../../components/HookSection'
 import SectionHeading from '../../components/SectionHeading'
 import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   Text
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowRightIcon } from 'lucide-react'
 import { SelectChain } from '../../components/SelectChain'
 import { Input } from '@/components/ui/input'
 import { WalletBar } from '@/components/WalletBar'
-import Loading from '../loading'
 import { ProcessButton, FormatButton } from '../../components/Button/ProcessButton'
-import { AvailableChains, Wallet, ChainObject } from '../appModel'
+import { Wallet, AvailableChains, ChainObject, TokenObject, WithdrawParameter } from '../appModel'
 import { useAccount as useAccountStark, useConnectors as useConnectorsStark } from '@starknet-react/core'
-import { useAccount as useAccountWagmi, useDisconnect, useSwitchNetwork, useNetwork } from 'wagmi'
+import { useAccount as useAccountWagmi, useSwitchNetwork, useNetwork } from 'wagmi'
 import { RainbowConnectButton } from '@/components/Button/RainbowConnectButton'
+import { AvailableChainsObject, AvailableTokensObject } from '../../utils/util'
+import { WithdrawDialog } from '../../components/DIalog/WithdrawDialog'
 
-function sleep(time: number) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
 
 export default function WithdrawHome() {
-  const chains: ChainObject[] = [
-    { key: AvailableChains.Goerli, value: Wallet.Wagmi },
-    { key: AvailableChains.Sepolia, value: Wallet.Wagmi },
-    { key: AvailableChains.Mumbai, value: Wallet.Wagmi },
-    { key: AvailableChains.StarkNet, value: Wallet.ArgentX },
-  ]
 
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedWalletNetwork, setWalletNetwork] = useState<ChainObject>({key:'', value: Wallet.Wagmi});
+  const [selectedToken, setToken] = useState<TokenObject>({key: '', value: ''});
   const [walletConfig, setConfig] = useState({ address: '', wallet: '', network: '' });
-  const [contractParameter, setContractParameter] = useState({ chain: '', proof: '', address: '' });
+  const [contractParameter, setContractParameter] = useState<WithdrawParameter>({ chain: '', proof: '', token: ''});
+  const [isWithdrawDialogOpen, setIsWithdrawDialogOpen] = useState(false);
 
   const { address: wagmiAddress, isConnected: isConnectedWagmi } = useAccountWagmi()
   const { address: starkAddress, isConnected: isConnectedStark } = useAccountStark()
@@ -76,42 +61,24 @@ export default function WithdrawHome() {
         }
       }
     }
-    , [selectedWalletNetwork.key, wagmiAddress, starkAddress])
+    ,[selectedWalletNetwork.key, wagmiAddress, starkAddress])
 
   useEffect(()=>{
-    setContractParameter({chain: selectedWalletNetwork.key, proof: contractParameter.proof, address:contractParameter.address})
-  },[contractParameter])
+    setContractParameter({...contractParameter, chain: selectedWalletNetwork.key, token: selectedToken.key})
+  },[selectedWalletNetwork.key, selectedToken.key])
 
-  async function withdraw() {
-    setIsLoading(true);
-    switch (selectedWalletNetwork.value) {
-      case Wallet.Wagmi: {
-        await sleep(1000)
-        console.log("withdrawEVM", chain?.name)
-        console.log(contractParameter.chain, contractParameter.proof, contractParameter.address)
-        break;
-      }
-      case Wallet.ArgentX: {
-        await sleep(1000)
-        console.log("withdrawStarkNet", chain?.name)
-        break;
-      }
-      default: {
-        await sleep(1000)
-        console.log("withdrawDefault")
-        break;
-      }
-    }
-    setIsLoading(false)
+  async function openWithdrawDialog() {
+    setIsWithdrawDialogOpen(true)
   }
 
   return (
     <div className="max-w-70 pt-12 mb-12 mx-4 lg:mx-0">
-      {isLoading && <Loading />}
       <HookSection>
         <SectionHeading>Withdraw</SectionHeading>
+
         <Card className='bg-cat-mantle p-5 rounded'>
           <CardBody className='space-y-2'>
+
           <div className='flex flex-row items-center justify-between space-x-2'>
               <Text className='text-cat-text'>Chain</Text>
               {
@@ -123,35 +90,56 @@ export default function WithdrawHome() {
               }
             </div>
             <div className='flex flex-row items-center justify-between space-x-2'>
-              <SelectChain items={chains} placeholder="From" setState={{setWalletNetwork}} />
+              <SelectChain items={AvailableChainsObject} placeholder="From" setState={{setWalletNetwork}} />
             </div>
             <div className='flex flex-row items-center justify-between pt-5'>
               <Text className='text-cat-text'>Proof</Text>
             </div>
-            <Input className='bg-cat-mantle text-cat-text' type='text' placeholder='Your Proof' 
+            <Input 
+              className='bg-cat-mantle text-cat-text' 
+              type='text' 
+              placeholder='Your Proof' 
+              disabled={(selectedWalletNetwork.key == '') ? true : false}
               onChange={(e) => {
-              const value = e.target.value
-              setContractParameter({...contractParameter, proof:value})
-              }} />
+                const proof = e.target.value
+                setContractParameter((preState:any) => ({
+                  ...preState,
+                  proof: proof
+                }))
+              }}
+            />
             <div className='flex flex-row items-center justify-between pt-5'>
-              <Text className='text-cat-text'>Address</Text>
+              <Text className='text-cat-text '>Token</Text>
             </div>
-            <Input className='bg-cat-mantle text-cat-text' type='text' placeholder='Your Address' 
-              onChange={(e) => {
-                const value = e.target.value
-                setContractParameter({...contractParameter, address: value})
-              }} />
+            <SelectChain 
+              items={AvailableTokensObject} 
+              placeholder="Token" 
+              className='bg-cat-mantle text-cat-text' 
+              setState={{setToken}} 
+              disabled={(selectedWalletNetwork.key == '') ? true : false}
+            />
+
             <ProcessButton
-              placeholder={(walletConfig.address != '' && walletConfig.network != '') ? 'Kamui' : 'Please Connect First'}
+              placeholder={'Withdraw'}
+              loadingText={'Withdraw'}
+              loading={false}
               className='pt-10'
-              process={withdraw}
-              loading={isLoading}
-              loadingText="Kamuiing"
+              process={openWithdrawDialog}
               walletConfig={walletConfig}
+              textColor='#cdd6f4'
+              disabled={(walletConfig.address == '' || walletConfig.network == '' || contractParameter.chain == '' || contractParameter.proof == '' || contractParameter.token == '')}
             />
           </CardBody>
         </Card>
       </HookSection>
+      <WithdrawDialog 
+        isOpen={isWithdrawDialogOpen} 
+        onClose={setIsWithdrawDialogOpen} 
+        contractParameter={contractParameter} 
+        walletConfig={walletConfig}
+        selectedWalletNetwork={selectedWalletNetwork}
+        chain={chain}
+      />
     </div>
   )
 }
